@@ -1,0 +1,124 @@
+{% extends "base.html" %} {% load tracker_filters %} {% block title %}Dashboard
+· Work Hours{% endblock %} {% block content %}
+
+<div class="grid grid-cols-1 gap-6">
+  <div class="bg-dark-800 rounded-xl shadow-lg border border-dark-700 p-6">
+    <h2 class="text-lg font-semibold mb-4 text-blue-400">Filter Work Hours</h2>
+    <form method="get" class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+      <div>
+        <label class="block text-sm mb-2 text-gray-300">Employee</label>
+        <div class="relative">
+          {{ form.employee }}
+          <style>
+            select {
+              @apply bg-dark-700 border-dark-600 text-gray-200 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5;
+            }
+          </style>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm mb-2 text-gray-300">Start date</label>
+        <div class="relative">
+          {{ form.start_date }}
+          <style>
+            input[type="date"] {
+              @apply bg-dark-700 border-dark-600 text-gray-200 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5;
+            }
+          </style>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm mb-2 text-gray-300">End date</label>
+        <div class="relative">{{ form.end_date }}</div>
+      </div>
+      <div>
+        <label class="block text-sm mb-2 text-gray-300">Year</label>
+        <div class="relative">
+          {{ form.year }}
+          <style>
+            input[type="number"] {
+              @apply bg-dark-700 border-dark-600 text-gray-200 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5;
+            }
+          </style>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm mb-2 text-gray-300">Month</label>
+        <div class="relative">{{ form.month }}</div>
+      </div>
+      <div class="md:col-span-5 flex gap-3">
+        <button
+          class="inline-flex items-center px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+          type="submit">
+          Apply Filters
+        </button>
+        <a
+          href="/"
+          class="inline-flex items-center px-6 py-2.5 bg-dark-700 text-gray-300 rounded-lg hover:bg-dark-600 transition-colors font-medium">
+          Reset
+        </a>
+        <a
+          href="/entries/add/"
+          class="ml-auto inline-flex items-center px-6 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium">
+          <svg
+            class="w-5 h-5 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+          Add Entry
+        </a>
+      </div>
+    </form>
+  </div>
+
+  <div class="bg-dark-800 rounded-xl shadow-lg border border-dark-700 p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-semibold text-blue-400">Recent Work Entries</h2>
+      <a
+        href="/entries/"
+        class="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+        >View all entries</a
+      >
+    </div>
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead class="bg-dark-700 text-gray-300">
+          <tr>
+            <th class="text-left px-4 py-3 font-medium">Employee</th>
+            <th class="text-left px-4 py-3 font-medium">Date</th>
+            <th class="text-left px-4 py-3 font-medium">Start</th>
+            <th class="text-left px-4 py-3 font-medium">End</th>
+            <th class="text-right px-4 py-3 font-medium">Hours</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-dark-700">
+          {% for e in entries %}
+          <tr class="hover:bg-dark-700/50 transition-colors">
+            <td class="px-4 py-3 text-gray-300">{{ e.employee.name }}</td>
+            <td class="px-4 py-3 text-gray-300">{{ e.date }}</td>
+            <td class="px-4 py-3 text-gray-300">{{ e.start_time }}</td>
+            <td class="px-4 py-3 text-gray-300">{{ e.end_time }}</td>
+            <td class="px-4 py-3 text-right text-blue-400 font-medium">
+              {{ e.duration_hours|format_decimal_hours }} h
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td class="px-4 py-3 text-gray-500" colspan="5">
+              No entries found.	
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

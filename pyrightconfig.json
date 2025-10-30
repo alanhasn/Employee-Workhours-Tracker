@@ -1,0 +1,21 @@
+{
+	"include": [
+		"workhours"
+	],
+	"venvPath": ".",
+	"venv": ".venv",
+	"pythonVersion": "3.11",
+	"typeCheckingMode": "basic",
+	"reportMissingImports": "warning",
+	"reportMissingTypeStubs": "none",
+	"executionEnvironments": [
+		{
+			"root": "workhours",
+			"extraPaths": [
+				"workhours"
+			]
+		}
+	]
+}
+
+

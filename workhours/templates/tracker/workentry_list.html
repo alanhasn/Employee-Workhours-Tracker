@@ -1,0 +1,80 @@
+{% extends "base.html" %} {% load tracker_filters %} {% block title %}Work
+Entries · Work Hours{% endblock title %} {% block content %}
+
+<div class="bg-dark-800 rounded-xl shadow-lg border border-dark-700 p-6">
+  <div class="flex items-center justify-between mb-4">
+    <h1 class="text-xl font-semibold text-blue-400">All Work Entries</h1>
+    <a
+      href="/entries/add/"
+      class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+      <svg
+        class="w-5 h-5 mr-2"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+      </svg>
+      Add Work Entry
+    </a>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="min-w-full text-sm">
+      <thead class="bg-dark-700 text-gray-300">
+        <tr>
+          <th class="text-left px-4 py-3 font-medium">Employee</th>
+          <th class="text-left px-4 py-3 font-medium">Date</th>
+          <th class="text-left px-4 py-3 font-medium">Start</th>
+          <th class="text-left px-4 py-3 font-medium">End</th>
+          <th class="text-right px-4 py-3 font-medium">Regular Hours</th>
+          <th class="text-right px-4 py-3 font-medium">Extra Hours</th>
+          <th class="text-right px-4 py-3 font-medium">Total Hours</th>
+          <th class="text-right px-4 py-3 font-medium">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-dark-700">
+        {% for e in entries %}
+        <tr class="hover:bg-dark-700/50 transition-colors">
+          <td class="px-4 py-3 text-gray-300">{{ e.employee.name }}</td>
+          <td class="px-4 py-3 text-gray-300">{{ e.date }}</td>
+          <td class="px-4 py-3 text-gray-300">{{ e.start_time }}</td>
+          <td class="px-4 py-3 text-gray-300">{{ e.end_time }}</td>
+          <td class="px-4 py-3 text-right text-blue-400 font-medium">
+            {{ e.duration_hours|format_decimal_hours }} h
+          </td>
+          <td class="px-4 py-3 text-right text-green-400 font-medium">
+            {% if e.extra_hours %}{{ e.extra_hours|format_decimal_hours }} h{%
+            else %}-{% endif %}
+          </td>
+          <td class="px-4 py-3 text-right text-blue-400 font-medium">
+            {{ e.total_hours|format_decimal_hours }} h
+          </td>
+          <td class="px-4 py-3 text-right space-x-3">
+            <a
+              class="text-blue-400 hover:text-blue-300 transition-colors"
+              href="/entries/{{ e.id }}/edit/"
+              >Edit</a
+            >
+            <a
+              class="text-red-400 hover:text-red-300 transition-colors"
+              href="/entries/{{ e.id }}/delete/"
+              >Delete</a
+            >
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td class="px-4 py-3 text-gray-500" colspan="6">
+            No entries yet. Click the Add Work Entry button to create one.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% load tracker_filters %}
+{% block content %}
+<div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto dark:bg-slate-900 dark:text-slate-100 min-h-screen">
+
+  <!-- Header -->
+  <div class="sm:flex sm:items-center mb-8">
+    <div class="sm:flex-auto">
+      <h1 class="text-2xl font-semibold text-slate-900 dark:text-slate-100">
+        Work Hours Analytics
+      </h1>
+    </div>
+  </div>
+
+  <!-- Monthly Stats -->
+  <div class="mb-8">
+    <div class="rounded-lg bg-white dark:bg-slate-800 shadow">
+      <div class="p-4">
+        <h3 class="text-base font-semibold text-slate-900 dark:text-slate-100 mb-4">
+          Monthly Total per Employee ({{ current_month_str }})
+        </h3>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
+            <thead class="bg-slate-50 dark:bg-slate-700/50">
+              <tr>
+                <th class="py-3 text-left text-sm font-semibold text-slate-900 dark:text-slate-100">
+                  Employee
+                </th>
+                <th class="py-3 text-right text-sm font-semibold text-slate-900 dark:text-slate-100">
+                  Regular Hours
+                </th>
+                <th class="py-3 text-right text-sm font-semibold text-slate-900 dark:text-slate-100">
+                  Extra Hours
+                </th>
+                <th class="py-3 text-right text-sm font-semibold text-slate-900 dark:text-slate-100">
+                  Total Hours
+                </th>
+              </tr>
+            </thead>
+
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+              {% for entry in monthly_totals %}
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition">
+                <td class="py-3 text-sm text-slate-900 dark:text-slate-100">
+                  {{ entry.employee__name }}
+                </td>
+                <td class="py-3 text-right text-sm text-blue-500 dark:text-blue-400">
+                  {{ entry.regular_hours|format_decimal_hours }} h
+                </td>
+                <td class="py-3 text-right text-sm text-green-500 dark:text-green-400">
+                  {{ entry.extra_hours|format_decimal_hours }} h
+                </td>
+                <td class="py-3 text-right text-sm font-medium text-slate-900 dark:text-slate-100">
+                  {{ entry.total_hours|format_decimal_hours }} h
+                </td>
+              </tr>
+              {% endfor %}
+              <tr class="bg-slate-50 dark:bg-slate-700/60 font-medium">
+                <td class="py-3 text-sm text-slate-900 dark:text-slate-100">Total</td>
+                <td class="py-3 text-right text-sm text-blue-500 dark:text-blue-400">
+                  {{ monthly_total.regular_hours|format_decimal_hours }} h
+                </td>
+                <td class="py-3 text-right text-sm text-green-500 dark:text-green-400">
+                  {{ monthly_total.extra_hours|format_decimal_hours }} h
+                </td>
+                <td class="py-3 text-right text-sm text-slate-900 dark:text-slate-100">
+                  {{ monthly_total.total_hours|format_decimal_hours }} h
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Yearly Stats -->
+  <div class="mb-8">
+    <div class="rounded-lg bg-white dark:bg-slate-800 shadow">
+      <div class="p-4">
+        <h3 class="text-base font-semibold text-slate-900 dark:text-slate-100 mb-4">
+          Yearly Total per Employee ({{ current_year }})
+        </h3>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
+            <thead class="bg-slate-50 dark:bg-slate-700/50">
+              <tr>
+                <th class="py-3 text-left text-sm font-semibold text-slate-900 dark:text-slate-100">
+                  Employee
+                </th>
+                <th class="py-3 text-right text-sm font-semibold text-slate-900 dark:text-slate-100">
+                  Regular Hours
+                </th>
+                <th class="py-3 text-right text-sm font-semibold text-slate-900 dark:text-slate-100">
+                  Extra Hours
+                </th>
+                <th class="py-3 text-right text-sm font-semibold text-slate-900 dark:text-slate-100">
+                  Total Hours
+                </th>
+              </tr>
+            </thead>
+
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+              {% for entry in yearly_totals %}
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition">
+                <td class="py-3 text-sm text-slate-900 dark:text-slate-100">
+                  {{ entry.employee__name }}
+                </td>
+                <td class="py-3 text-right text-sm text-blue-500 dark:text-blue-400">
+                  {{ entry.regular_hours|format_decimal_hours }} h
+                </td>
+                <td class="py-3 text-right text-sm text-green-500 dark:text-green-400">
+                  {{ entry.extra_hours|format_decimal_hours }} h
+                </td>
+                <td class="py-3 text-right text-sm font-medium text-slate-900 dark:text-slate-100">
+                  {{ entry.total_hours|format_decimal_hours }} h
+                </td>
+              </tr>
+              {% endfor %}
+              <tr class="bg-slate-50 dark:bg-slate-700/60 font-medium">
+                <td class="py-3 text-sm text-slate-900 dark:text-slate-100">Total</td>
+                <td class="py-3 text-right text-sm text-blue-500 dark:text-blue-400">
+                  {{ yearly_total.regular_hours|format_decimal_hours }} h
+                </td>
+                <td class="py-3 text-right text-sm text-green-500 dark:text-green-400">
+                  {{ yearly_total.extra_hours|format_decimal_hours }} h
+                </td>
+                <td class="py-3 text-right text-sm text-slate-900 dark:text-slate-100">
+                  {{ yearly_total.total_hours|format_decimal_hours }} h
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title %}Admin Sign in · Work Hours{% endblock %}
+{% block extra_head %}
+  <meta name="robots" content="noindex,nofollow" />
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-dark-900">
+  <div class="w-full max-w-md mx-auto p-8 bg-dark-800 rounded-2xl shadow-xl ring-1 ring-dark-700">
+    <div class="text-center mb-6">
+      <a href="{% url 'admin:index' %}" class="inline-flex items-center justify-center">
+        <span class="inline-block bg-blue-600 text-white rounded-full p-2 shadow">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M3 12a9 9 0 1118 0 9 9 0 01-18 0z" stroke="currentColor" stroke-width="1.2"></path>
+            <path d="M8 12h8" stroke="white" stroke-width="1.5" stroke-linecap="round"></path>
+          </svg>
+        </span>
+      </a>
+      <h1 class="mt-4 text-2xl font-semibold text-slate-100">Admin Sign in</h1>
+      <p class="mt-1 text-sm text-slate-400">Access the administration dashboard</p>
+    </div>
+
+    <form method="post" action="{% url 'login' %}" class="space-y-6 login-card" novalidate aria-describedby="login-errors">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next|default:'' }}" />
+
+      <div id="login-errors" aria-live="polite">
+        {% if form and form.non_field_errors %}
+          <div class="rounded-md bg-red-700/10 border border-red-700/20 p-3 mb-1">
+            <p class="text-sm text-red-300">{{ form.non_field_errors|join:" " }}</p>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Username field (big white input with left icon) -->
+      <div>
+        <label for="id_username" class="block text-sm font-medium text-slate-300">Username</label>
+        <div class="mt-2 relative">
+          <!-- left icon -->
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="w-5 h-5 text-slate-400" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 12a5 5 0 100-10 5 5 0 000 10z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4 20a8 8 0 0116 0" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <input id="id_username" name="username" type="text" required autocomplete="username" autofocus
+                 class="block w-full pl-11 pr-4 py-3 rounded-md bg-white text-slate-900 placeholder-slate-400 border border-transparent shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent sm:text-base"
+                 placeholder="admin" />
+
+        </div>
+        {% if form and form.username and form.username.errors %}
+          <p class="mt-1 text-sm text-red-300" role="alert">{{ form.username.errors.0 }}</p>
+        {% endif %}
+      </div>
+
+      <!-- Password field (big white input with right-eye toggle) -->
+      <div>
+        <label for="id_password" class="block text-sm font-medium text-slate-300">Password</label>
+        <div class="mt-2 relative">
+          <input id="id_password" name="password" type="password" required autocomplete="current-password"
+                 class="block w-full pr-12 pl-4 py-3 rounded-md bg-white text-slate-900 placeholder-slate-400 border border-transparent shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent sm:text-base"
+                 placeholder="••••••••" />
+
+          <!-- eye toggle button -->
+          <button type="button" id="togglePassword" aria-label="Show password"
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 hover:text-slate-700 focus:outline-none">
+            <svg id="eyeOpen" class="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" stroke="currentColor" stroke-width="1.2"></path>
+              <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.2"></circle>
+            </svg>
+            <svg id="eyeClosed" class="w-5 h-5 hidden" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M3 3l18 18" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path>
+            </svg>
+          </button>
+        </div>
+        {% if form and form.password and form.password.errors %}
+          <p class="mt-1 text-sm text-red-300" role="alert">{{ form.password.errors.0 }}</p>
+        {% endif %}
+      </div>
+
+      <!-- Submit -->
+      <div>
+        <button type="submit"
+                class="w-full py-3 rounded-lg text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-shadow shadow">
+          Sign in
+        </button>
+      </div>
+    </form>
+
+    <div class="mt-6 text-center text-xs text-slate-500">
+      <span>Admin access only</span>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  (function () {
+    const toggleBtn = document.getElementById('togglePassword');
+    if (!toggleBtn) return;
+    const pwd = document.getElementById('id_password');
+    const eyeOpen = document.getElementById('eyeOpen');
+    const eyeClosed = document.getElementById('eyeClosed');
+
+    toggleBtn.addEventListener('click', function () {
+      if (!pwd) return;
+      const isPwd = pwd.getAttribute('type') === 'password';
+      pwd.setAttribute('type', isPwd ? 'text' : 'password');
+      eyeOpen.classList.toggle('hidden');
+      eyeClosed.classList.toggle('hidden');
+      toggleBtn.setAttribute('aria-label', isPwd ? 'Hide password' : 'Show password');
+      // keep input focused after toggle
+      pwd.focus();
+    });
+
+    // add subtle keyboard accessible focus for inputs (enhances contrast on some browsers)
+    document.querySelectorAll('.login-card input').forEach(input => {
+      input.addEventListener('focus', () => input.classList.add('ring-2', 'ring-blue-600'));
+      input.addEventListener('blur', () => input.classList.remove('ring-2', 'ring-blue-600'));
+    });
+
+    // focus username on load
+    const user = document.getElementById('id_username');
+    if (user) user.focus();
+  })();
+</script>
+{% endblock %}
