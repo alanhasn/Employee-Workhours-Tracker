@@ -3,8 +3,21 @@
 <div class="max-w-2xl">
   <div class="bg-dark-800 rounded-xl shadow-lg border border-dark-700 p-6">
     <h1 class="text-xl font-semibold mb-6 text-blue-400">{{ title }}</h1>
-    <form method="post" class="grid grid-cols-1 gap-6">
-      {% csrf_token %}
+    <form
+      method="post"
+      action="{{ request.path }}"
+      class="grid grid-cols-1 gap-6">
+      {% csrf_token %} {% if form.non_field_errors %}
+      <div class="rounded-md bg-red-50 p-4">
+        <div class="flex">
+          <div class="ml-3">
+            <h3 class="text-sm font-medium text-red-800">
+              {{ form.non_field_errors.0 }}
+            </h3>
+          </div>
+        </div>
+      </div>
+      {% endif %}
       <div>
         <label class="block text-sm mb-2 text-gray-300">Employee</label>
         {{ form.employee }} {% if form.employee.errors %}
@@ -52,7 +65,7 @@
           Save Entry
         </button>
         <a
-          href="/entries/"
+          href="{% url 'workentry_list' %}"
           class="inline-flex items-center px-6 py-2.5 bg-dark-700 text-gray-300 rounded-lg hover:bg-dark-600 transition-colors font-medium">
           Cancel
         </a>

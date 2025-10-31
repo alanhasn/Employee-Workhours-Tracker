@@ -1,4 +1,5 @@
-{% extends "base.html" %} {% block title %}{{ title }} · Work Hours{% endblock%} {% block content %}
+{% extends "base.html" %} {% block title %}{{ title }} · Work Hours{% endblock%}
+{% block content %}
 <div class="max-w-lg">
   <div class="bg-dark-800 rounded-xl shadow-lg border border-dark-700 p-6">
     <h1 class="text-xl font-semibold mb-3 text-blue-400">{{ title }}</h1>
@@ -26,7 +27,7 @@
           Delete Entry
         </button>
         <a
-          href="/entries/"
+          href="{% url 'workentry_list' %}"
           class="inline-flex items-center px-6 py-2.5 bg-dark-700 text-gray-300 rounded-lg hover:bg-dark-600 transition-colors font-medium">
           Cancel
         </a>

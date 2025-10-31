@@ -5,7 +5,7 @@ Entries · Work Hours{% endblock title %} {% block content %}
   <div class="flex items-center justify-between mb-4">
     <h1 class="text-xl font-semibold text-blue-400">All Work Entries</h1>
     <a
-      href="/entries/add/"
+      href="{% url 'workentry_add' %}"
       class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
       <svg
         class="w-5 h-5 mr-2"
@@ -55,12 +55,12 @@ Entries · Work Hours{% endblock title %} {% block content %}
           <td class="px-4 py-3 text-right space-x-3">
             <a
               class="text-blue-400 hover:text-blue-300 transition-colors"
-              href="/entries/{{ e.id }}/edit/"
+              href="{% url 'workentry_edit' e.id %}"
               >Edit</a
             >
             <a
               class="text-red-400 hover:text-red-300 transition-colors"
-              href="/entries/{{ e.id }}/delete/"
+              href="{% url 'workentry_delete' e.id %}"
               >Delete</a
             >
           </td>

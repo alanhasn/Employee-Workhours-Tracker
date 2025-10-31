@@ -155,9 +155,16 @@ class WorkEntryUpdateView(LoginRequiredMixin, View):
         entry = get_object_or_404(WorkEntry, pk=pk)
         form = WorkEntryForm(request.POST, instance=entry)
         if form.is_valid():
-            form.save()
-            return redirect(reverse("workentry_list"))
-        return render(request, "tracker/workentry_form.html", {"form": form, "title": "Edit Work Entry"})
+            try:
+                form.save()
+                return redirect(reverse("workentry_list"))
+            except Exception as e:
+                form.add_error(None, f"Error saving entry: {str(e)}")
+        return render(request, "tracker/workentry_form.html", {
+            "form": form,
+            "title": "Edit Work Entry",
+            "entry": entry
+        })
 
 
 class WorkEntryDeleteView(LoginRequiredMixin, View):

@@ -53,12 +53,12 @@
           Apply Filters
         </button>
         <a
-          href="/"
+          href="{% url 'dashboard' %}"
           class="inline-flex items-center px-6 py-2.5 bg-dark-700 text-gray-300 rounded-lg hover:bg-dark-600 transition-colors font-medium">
           Reset
         </a>
         <a
-          href="/entries/add/"
+          href="{% url 'workentry_add' %}"
           class="ml-auto inline-flex items-center px-6 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium">
           <svg
             class="w-5 h-5 mr-2"
@@ -81,7 +81,7 @@
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-lg font-semibold text-blue-400">Recent Work Entries</h2>
       <a
-        href="/entries/"
+        href="{% url 'workentry_list' %}"
         class="text-sm text-blue-400 hover:text-blue-300 transition-colors"
         >View all entries</a
       >
@@ -111,7 +111,7 @@
           {% empty %}
           <tr>
             <td class="px-4 py-3 text-gray-500" colspan="5">
-              No entries found.	
+              No entries found.
             </td>
           </tr>
           {% endfor %}
