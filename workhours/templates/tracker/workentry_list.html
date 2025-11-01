@@ -46,8 +46,7 @@ Entries · Work Hours{% endblock title %} {% block content %}
             {{ e.duration_hours|format_decimal_hours }} h
           </td>
           <td class="px-4 py-3 text-right text-green-400 font-medium">
-            {% if e.extra_hours %}{{ e.extra_hours|format_decimal_hours }} h{%
-            else %}-{% endif %}
+            {% if e.extra_hours %}{{ e.extra_hours|format_decimal_hours }} h{% else %}-{% endif %}
           </td>
           <td class="px-4 py-3 text-right text-blue-400 font-medium">
             {{ e.total_hours|format_decimal_hours }} h
